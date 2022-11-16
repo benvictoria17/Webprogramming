@@ -1,0 +1,54 @@
+var level = 0;
+var speed = 5; //Change 1: speed of the car
+var forward = 1; //Change 5: move forward or backward
+
+var level1btn = createSprite(120, 70);
+level1btn.setAnimation("dieRed1_1");
+var level2btn = createSprite(250, 70);
+level2btn.setAnimation("dieRed2_1");
+var car = createSprite(50, 200);
+car.setAnimation("car_green_1");
+car.scale = 0.5;
+function draw() {
+  background("white");
+  if (mousePressedOver(level1btn)) {
+    level = 1;
+  }
+  if (mousePressedOver(level2btn)) {
+    level = 2;
+  }
+  if (level==1) {
+    background(rgb(255, 120, 70));  //Change 2: using RGB function for 1st level 
+    textSize(30);
+    text("level 1", 150, 300);
+    speed = 7;
+  }
+  
+  if (level==2) {
+    background(rgb(100, 15, 70)); //Change 3: using RGB function for 1st level
+    textSize(30);
+    textFont("Georgia"); //Change 4: changing the text font
+    text("level 2", 150, 300);
+    speed = 10;
+  }
+  
+  if (level==0) {
+    background("white");
+    textFont("Georgia"); //Change 4: changing the text font
+    textSize(30);
+    text("Choose a level", 150, 300);
+    speed = 5;
+  }
+  
+  drawSprites();
+  
+  if (keyDown("space")) {
+    if (car.x >= 400) //Change 5: check for boundaries
+      forward = -1;
+      
+    if (car.x <= 0) //Change 5: check for boundaries
+      forward = 1;
+      
+    car.x = car.x+forward*speed; //Change 1: speed of the car
+  }
+}
