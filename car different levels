@@ -18,7 +18,7 @@ function draw() {
     level = 2;
   }
   if (level==1) {
-    background("black");//Change 2: using RGB function for 1st level 
+    background("black");  //Change 2: using RGB function for 1st level 
     textSize(30);
     text("level 1", 150, 300);
     speed = 7;
@@ -44,7 +44,7 @@ function draw() {
   
   if (keyDown("space")) {
     if (car.x >= 400) //Change 5: check for boundaries
-      (forward = -1)
+      (forward = -1);
       
     if (car.x <= 0) //Change 5: check for boundaries
       forward = 1;
