@@ -1,4 +1,3 @@
-
 var level = 0;
 var speed = 5;
 var forward = 1;
