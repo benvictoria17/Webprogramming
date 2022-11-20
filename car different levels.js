@@ -1,57 +1,115 @@
+
 var level = 0;
-var speed = 5; //Change 1: speed of the car
-var forward = 1; //Change 5: move forward or backward
+var speed = 5;
+var forward = 1;
+
+var background1 = createSprite(0, 0); // Change: add background sprite
+background1.setAnimation("space2");
+background1.scale = 2;
 
 var level1btn = createSprite(120, 70);
 level1btn.setAnimation("dieRed1_1");
+
 var level2btn = createSprite(250, 70);
 level2btn.setAnimation("dieRed2_1");
+
 var car = createSprite(50, 200);
-car.setAnimation("car_green_1");
-car.scale = 0.5;
+car.setAnimation("ufo"); // Change: car sprite to ufo
+car.scale = 0.15;
+
+var badGuySprite1 = createSprite(1000, 1000);
+badGuySprite1.setAnimation("badguy1"); // Change: add bad guy 1
+badGuySprite1.scale = 0.085;
+
+var badGuySprite2 = createSprite(1000, 1000);
+badGuySprite2.setAnimation("badguy2"); // Change: add bad guy 2 
+badGuySprite2.scale = 0.085;
+
+var badGuySprite3 = createSprite(1000, 1000);
+badGuySprite3.setAnimation("badguy3"); // Change: add bad guy 3
+badGuySprite3.scale = 0.085;
+
+var frame = 0;
+var score = 0; // Change: add score
+
 function draw() {
-  background("white");
   if (mousePressedOver(level1btn)) {
     level = 1;
   }
   if (mousePressedOver(level2btn)) {
     level = 2;
   }
-  if (level==1) {
-    background("black");  //Change 2: using RGB function for 1st level 
-    textSize(30);
-    text("level 1", 150, 300);
-    speed = 7;
-  }
   
-  if (level==2) {
-    background("blue");//Change 3: using RGB function for 1st level
-    textSize(30);
-    textFont("Georgia"); //Change 4: changing the text font
-    text("level 2", 150, 300);
+  if (level == 1)
+    speed = 7; // Change: car speed levels
+  if (level == 2)
     speed = 10;
+  
+  if (level != 0) {
+    // Change: add bad guy velocity
+    if (badGuySprite1.y > 400) {
+      badGuySprite1.x = randomNumber(20, 380);
+      badGuySprite1.y = 0;
+      badGuySprite1.velocityY = randomNumber(3, 5);
+    }
+    if (badGuySprite2.y > 400) {
+      badGuySprite2.x = randomNumber(20, 380);
+      badGuySprite2.y = 0;
+      badGuySprite2.velocityY = randomNumber(3, 5);
+    }
+    if (badGuySprite3.y > 400) {
+      badGuySprite3.x = randomNumber(20, 380);
+      badGuySprite3.y = 0;
+      badGuySprite3.velocityY = randomNumber(3, 5);
+    }
   }
   
-  if (level==0) {
-    background("white");
-    textFont("Georgia"); //Change 4: changing the text font
-    textSize(30);
-    text("Choose a level", 150, 300);
-    speed = 5;
+  if (car.x >= 400) {
+    forward = -1;
+    score = score + 1; // Change: update score when hit wall
+  } else if (car.x <= 0) {
+    forward = 1;
+    score = score + 1;
   }
   
+  // Change: end game when bad guy touches car
+  if (badGuySprite1.isTouching(car) || badGuySprite2.isTouching(car) || badGuySprite3.isTouching(car)) {
+    car.setVelocity(0, 0);
+    badGuySprite1.setVelocity(0, 0);
+    badGuySprite2.setVelocity(0, 0);
+    badGuySprite3.setVelocity(0, 0);
+    
+    textSize(50);
+    fill("white");
+    text("GAME OVER", 40, 200);
+    
+    return;
+  }
+  
+  // Change: stop car when pressing space
+  if (keyDown("space"))
+    car.velocityX = 0;
+  else
+    car.velocityX = forward * speed;
+    
   drawSprites();
   
-  if (keyDown("space")) {
-    if (car.x >= 400) //Change 5: check for boundaries
-      (forward = -1);
-      
-    if (car.x <= 0) //Change 5: check for boundaries
-      forward = 1;
-      
-    car.x = car.x+forward*speed; //Change 1: speed of the car
+  // Change: draw text after sprites
+  if (level == 0) {
+    textSize(30);
+    fill("white");
+    text("choose a level", 90, 150);
+  } else if (level == 1) {
+    textSize(30);
+    fill("white");
+    text("level 1", 150, 300);
+    text("score: " + score, 10, 30);
+  } else if (level == 2) {
+    textSize(30);
+    fill("white");
+    text("level 2", 150, 300);
+    text("score: " + score, 10, 30);
   }
+  
+  frame = frame + 1;
 }
-
-
-
