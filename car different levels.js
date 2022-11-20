@@ -40,10 +40,11 @@ function draw() {
     level = 2;
   }
   
-  if (level == 1)
+  if (level == 1) {
     speed = 7; // Change: car speed levels
-  if (level == 2)
+  } else if (level == 2) {
     speed = 10;
+  }
   
   if (level != 0) {
     // Change: add bad guy velocity
@@ -83,14 +84,15 @@ function draw() {
     fill("white");
     text("GAME OVER", 40, 200);
     
-    return;
+    return 1;
   }
   
   // Change: stop car when pressing space
-  if (keyDown("space"))
+  if (keyDown("space")) {
     car.velocityX = 0;
-  else
+  } else {
     car.velocityX = forward * speed;
+  }
     
   drawSprites();
   
